@@ -19,3 +19,10 @@ Number range(10,50): 33
 Rows (index): 0 3 7 9 
 Columns (index): 9 11 14 
 """
+
+x = int(input('Введите число: '))
+with open('hw.1/file_1.txt', 'r') as file:
+    matrix = [list(map(int, row.split())) for row in file.readlines()]
+    for i in matrix:
+       print(i)
+
