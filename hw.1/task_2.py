@@ -19,10 +19,18 @@ Number range(10,50): 33
 Rows (index): 0 3 7 9 
 Columns (index): 9 11 14 
 """
+while True:
+    try:
+        x = int(input('Введите число от 1 до 100: '))
+    except ValueError:
+        continue
 
-x = int(input('Введите число: '))
-with open('hw.1/file_1.txt', 'r') as file:
-    matrix = [list(map(int, row.split())) for row in file.readlines()]
-    for i in matrix:
-       print(i)
-
+    with open('hw.1/file_1.txt', 'r') as file:
+        matrix = [list(map(int, row.split())) for row in file.readlines()]
+        for index, item in enumerate(matrix): 
+            for i,item_ in enumerate(item):
+                if item_ == x: 
+                    print(f'Cтрока {index}, столбец {i}')
+                    continue
+    if input('Continue? (y/n) ') != 'y':
+        break
