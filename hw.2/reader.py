@@ -1,14 +1,12 @@
+class Reader:
+    def __init__(self, id: int, name: str, surname: str, age: int):
+        self.id = id
+        self.name = name
+        self.surname = surname
+        self.age = age
 
-class Reader_books:
-      def take_book(self):
-            self.book=input("Введите код книги (пример 001): ")
-            return self.book
+        # Тут храним id книг, которые пользователь взял почитать
+        self.books = []
 
-      def returnBook(self):
-            book_id = input("Введите код книги (пример 001): ")
-            book_name = input("Введите название книги: ")
-            book_author = input("Введите автора книги: ")
-            book_year = input("Введите год издания книги: ")
-
-            self.book = (f'{book_id}$!${book_name}$!${book_author}$!${book_year}\n')
-            return self.book
+    def __repr__(self):
+        return f'{self.id}) {self.name} {self.surname}'

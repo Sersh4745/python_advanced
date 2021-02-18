@@ -1,18 +1,13 @@
+class Book:
+    def __init__(self, book_id, book_name, book_author, book_year, id_reader=None):
+        self.id = book_id
+        self.title = book_name
+        self.author = book_author
+        self.year = book_year
 
-class Books():
-    def __init__(self, book_id, book_name, book_author, book_year):
-        self.book_id = book_id
-        self.book_name = book_name
-        self.book_author = book_author
-        self.book_year = book_year
-    x = input('Enter: ')
-    with open('hw.2/books_availible.txt', 'r') as f:
-        file = f.readlines()
-        for i in file:
-            i = i.rstrip().split('$!$')
-            if ''.join(i[0:1]) == x:
-                book_name = ''.join(i[1:2])
-                book_author = ''.join(i[2:3])
-                book_year = ''.join(i[3:4])
-                
-           
+        # сюда будем писать id юзера,
+        # который взял книгу
+        self.id_reader = None
+
+    def __repr__(self):
+        return f'{self.id}) {self.title}, {self.year}'
