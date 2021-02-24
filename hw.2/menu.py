@@ -33,34 +33,64 @@ def main():
 
         elif choice == 4:
             request_book_id = input('Введите ID книги: ')
+            if not request_book_id.isnumeric():
+                print('Ошибка, вы ввели не число!')
+                continue
             request_name_id = input('Введите ID читателя: ')
-            library.give_book(request_book_id, request_name_id)
+            if not request_name_id.isnumeric():
+                print('Ошибка, вы ввели не число!')
+                continue
+
+            library.give_book(int(request_book_id), int(request_name_id))
 
         elif choice == 5:
             request2_book_id = input('Введите ID книги: ')
+            if not request2_book_id.isnumeric():
+                print('Ошибка, вы ввели не число!')
+                continue
             request2_name_id = input('Введите ID читателя: ')
-            library.return_book(request2_book_id,request2_name_id)
+            if not request2_name_id.isnumeric():
+                print('Ошибка, вы ввели не число!')
+                continue
+
+            library.return_book(int(request2_book_id), int(request2_name_id))
 
         elif choice == 6:
             id = input('Введите ID Книги: ')
+            if not id.isnumeric():
+                print('Ошибка, вы ввели не число!')
+                continue
             name = input('Введите название Книги: ')
             author = input('Введите Автора Книги: ')
             year = input('Введите год Книги: ')
-            add_b = [id, name, author, year]
+            if not year.isnumeric():
+                print('Ошибка, вы ввели не число!')
+                continue
 
-            library.add_book(add_b)
+            library.add_book(Book(int(id), name, author, int(year)))
+
         elif choice == 7:
             request3_book_id = input('Введите ID книги которую хотите удалить: ')
-            library.remove_book(request3_book_id)
+            if not request3_book_id.isnumeric():
+                print('Ошибка, вы ввели не число!')
+                continue
+
+            library.remove_book(int(request3_book_id))
 
         elif choice == 8:
-            id_r = input('Введите ID читателя: ')
-            name_r = input('Введите имя читателя: ')
+            id = input('Введите ID читателя: ')
+            if not id.isnumeric():
+                print('Ошибка, вы ввели не число!')
+                continue
+            name = input('Введите имя читателя: ')
             surname = input('Введите фамилию: ')
             age = input('Введите возвраст: ')
-            add_r = [id_r, name_r, surname, age]
+            if not age.isnumeric():
+                print('Ошибка, вы ввели не число!')
+                continue
 
-            library.add_reader(add_r)
+            library.add_reader(Reader(int(id), name, surname, int(age)))
+            
         elif choice == 0:
             exit()
 
