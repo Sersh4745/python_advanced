@@ -1,0 +1,10 @@
+setup.py
+library_Diachenko_packeg/__init__.py
+library_Diachenko_packeg/book.py
+library_Diachenko_packeg/library.py
+library_Diachenko_packeg/menu.py
+library_Diachenko_packeg/reader.py
+library_Diachenkp_package.egg-info/PKG-INFO
+library_Diachenkp_package.egg-info/SOURCES.txt
+library_Diachenkp_package.egg-info/dependency_links.txt
+library_Diachenkp_package.egg-info/top_level.txt
