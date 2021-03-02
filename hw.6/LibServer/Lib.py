@@ -55,10 +55,13 @@ class Library:
         all_books_id = [book.id for book in self.books]
         if obj_book.id in all_books_id:
             print(f'Ошибка , книга с таким ID "{obj_book.id}" уже есть в библиотеке! ')
-            return
+            msg = f'\nОшибка , книга с таким ID "{obj_book.id}" уже есть в библиотеке! '
+            return msg
 
         self.books.append(obj_book)
         print(f'Поздравляем, книга "{obj_book.id}" добавлена в библиотеку')
+        msg = f'\nПоздравляем, книга "{obj_book.id}" добавлена в библиотеку'
+        return msg
 
     def remove_book(self, id_book: int) -> None:
         """
@@ -70,20 +73,21 @@ class Library:
         all_books_id = [book.id for book in self.books]
         if id_book not in all_books_id:
             print(f'Ошибка, книга с ID "{id_book}" не найдена')
-            return
+            msg = f'\nОшибка, книга с ID "{id_book}" не найдена'
+            return msg
 
         for book in self.books:
             if book.id == id_book:
                 self.books.remove(book)
                 print(f'Книга "{book.title}" была удалена')
-
+                msg = f'\nКнига "{book.title}" была удалена'
                 # ок, а если эта книга у кого-то из читателей???
                 # хотя ты и не добавлял книги читателям
                 for reader in self.readers:
                     if id_book in reader.books:
                         reader.books.remove(book)
                         break
-
+                return msg
                 break
 
     def add_reader(self, obj_reader: Reader) -> None:
@@ -95,9 +99,12 @@ class Library:
         all_readers_id = [reader.id for reader in self.readers]
         if obj_reader.id in all_readers_id:
             print(f'Ошибка, читатель с ID "{obj_reader.id}" уже существует!')
-            return
+            msg = f'\nОшибка, читатель с ID "{obj_reader.id}" уже существует!'
+            return msg
         self.readers.append(obj_reader)
         print(f'Поздравляем, читатель с ID {obj_reader.id} зарегестрирован.')
+        msg = f'\nПоздравляем, читатель с ID {obj_reader.id} зарегестрирован.'
+        return msg
 
     def print_all_books(self) -> None:
         """
@@ -147,20 +154,23 @@ class Library:
         all_books_id = [book.id for book in self.books]
         if id_book not in all_books_id:
             print(f'Ошибка, книги с ID {id_book} нет!')
-            return
+            msg = f'\nОшибка, книги с ID {id_book} нет!'
+            return msg
 
         all_readers_id = [reader.id for reader in self.readers]
         if id_reader not in all_readers_id:
             print(f'Ошибка, пользователя с ID {id_reader} нет!')
-            return
+            msg = f'\nОшибка, пользователя с ID {id_reader} нет!'
+            return msg
 
         # твои циклы очень долгие, лучше отдельно!
         obj_book = [book for book in self.books if id_book == book.id][0]
 
         # и третья проверка =)
         if obj_book.id_reader is not None:
-            print(f'Ошибка, книги с ID {id_reader} нет в наличии!')
-            return
+            print(f'Ошибка, книги с ID reader {id_reader} нет в наличии!')
+            msg = f'\nОшибка, книги с ID reader {id_reader} нет в наличии!'
+            return msg
 
         # получаем юзера
         obj_reader = [reader for reader in self.readers if id_reader == reader.id][0]
@@ -169,7 +179,8 @@ class Library:
         obj_book.id_reader = obj_reader.id
         obj_reader.books.append(obj_book.id)
         print('Поздравляем, книга выдана!')
-        return
+        msg = '\nПоздравляем, книга выдана!'
+        return msg
 
     def return_book(self, id_book: int, id_reader: int) -> None:
         """
@@ -182,24 +193,30 @@ class Library:
         all_books_id = [book.id for book in self.books]
         if id_book not in all_books_id:
             print(f'Ошибка, книги с ID {id_book} нет!')
-            return
+            msg = f'\nОшибка, книги с ID {id_book} нет!'
+            return msg
 
         all_readers_id = [reader.id for reader in self.readers]
         if id_reader not in all_readers_id:
             print(f'Ошибка, пользователя с ID {id_reader} нет!')
-            return
+            msg = f'\nОшибка, пользователя с ID {id_reader} нет!'
+            return msg
 
         obj_book = [book for book in self.books if id_book == book.id][0]
         if obj_book.id_reader is None:
             print(f'Ошибка, книга с ID {id_reader} и так в библиотеке!')
-            return
+            msg = f'\nОшибка, книга с ID {id_reader} и так в библиотеке!'
+            return msg
 
         obj_reader = [reader for reader in self.readers if id_reader == reader.id][0]
         if obj_book.id_reader != obj_reader.id or obj_book.id not in obj_reader.books:
-            print(f'Ошибка, книга с ID {id_reader} находится не у {obj_reader.name}!')
-            return
+            print(f'Ошибка, книга с ID {id_book} находится не у {obj_reader.name}!')
+            msg = f'\nОшибка, книга с ID {id_book} находится не у {obj_reader.name}!'
+            return msg
 
         # возвращаем книгу
         obj_book.id_reader = None
         obj_reader.books.remove(obj_book.id)
         print('Поздравляем Вы вернули книгу')
+        msg = '\nПоздравляем Вы вернули книгу'
+        return msg

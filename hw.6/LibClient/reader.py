@@ -9,4 +9,4 @@ class Reader:
         self.books = []
 
     def __repr__(self):
-        return f'{self.id}) {self.name} {self.surname}'
+        return f'{self.id} {self.name} {self.surname}'

@@ -41,6 +41,8 @@ while True:
                 exit()
             send_msg(sock, request_book_id.encode(encoding='866'))
             send_msg(sock, request_name_id.encode(encoding='866'))
+            #answer = pickle.loads(recv_msg(sock))
+            print(pickle.loads(recv_msg(sock)))
 
         if choice == '6':
             id_b = input('Введите ID Книги: ')
@@ -58,12 +60,14 @@ while True:
             send_msg(sock, name.encode(encoding='866'))
             send_msg(sock, author.encode(encoding='866'))
             send_msg(sock, year.encode(encoding='866'))
+            print(pickle.loads(recv_msg(sock)))
 
         if choice == '7':
             request3_book_id = input('Введите ID книги которую хотите удалить: ')
             if not request3_book_id.isnumeric():
                 print('Ошибка, вы ввели не число!')
             send_msg(sock, request3_book_id.encode(encoding='866'))
+            print(pickle.loads(recv_msg(sock)))
 
         if choice == '8':
             id_r = input('Введите ID читателя: ')
@@ -81,6 +85,7 @@ while True:
             send_msg(sock, name.encode(encoding='866'))
             send_msg(sock, surname.encode(encoding='866'))
             send_msg(sock, age.encode(encoding='866'))
+            print(pickle.loads(recv_msg(sock)))
 
         if choice == '9':
             exit()

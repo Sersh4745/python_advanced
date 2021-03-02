@@ -41,31 +41,44 @@ while True:
         if ret == '4':
             request_book_id = recv_msg(conn).decode(encoding='866')
             request_name_id = recv_msg(conn).decode(encoding='866')
-            lib.give_book(int(request_book_id), int(request_name_id))
+            msg = lib.give_book(int(request_book_id), int(request_name_id))
+            send_msg(conn, pickle.dumps(msg))
 
         if ret == '5':
             request_book_id = recv_msg(conn).decode(encoding='866')
             request_name_id = recv_msg(conn).decode(encoding='866')
-            lib.return_book(int(request_book_id), int(request_name_id))
+            msg = lib.return_book(int(request_book_id), int(request_name_id))
+            send_msg(conn, pickle.dumps(msg))
 
         if ret == '6':
             id_b = recv_msg(conn).decode(encoding='866')
             name = recv_msg(conn).decode(encoding='866')
             author = recv_msg(conn).decode(encoding='866')
             year = recv_msg(conn).decode(encoding='866')
-            lib.add_book(Book(int(id_b), name, author, int(year)))
+            msg = lib.add_book(Book(int(id_b), name, author, int(year)))
+            send_msg(conn, pickle.dumps(msg))
 
         if ret == '7':
             request3_book_id = recv_msg(conn).decode(encoding='866')
-            lib.remove_book(int(request3_book_id))
+            msg = lib.remove_book(int(request3_book_id))
+            send_msg(conn, pickle.dumps(msg))
 
         if ret == '8':
             id_r = recv_msg(conn).decode(encoding='866')
             name = recv_msg(conn).decode(encoding='866')
             surname = recv_msg(conn).decode(encoding='866')
             age = recv_msg(conn).decode(encoding='866')
-            lib.add_reader(Reader(int(id_r), name, surname, int(age)))
-
+            msg = lib.add_reader(Reader(int(id_r), name, surname, int(age)))
+            send_msg(conn, pickle.dumps(msg))
+            
         if ret == '9':
             exit()
+
+
+
+
+
+
+
+
 
