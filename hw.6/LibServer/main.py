@@ -42,7 +42,6 @@ while True:
             request_book_id = recv_msg(conn).decode(encoding='866')
             request_name_id = recv_msg(conn).decode(encoding='866')
             lib.give_book(int(request_book_id), int(request_name_id))
-            send_msg(conn, 'Поздравляем, книга выдана'.encode(encoding='866'))
 
         if ret == '5':
             request_book_id = recv_msg(conn).decode(encoding='866')
@@ -69,12 +68,4 @@ while True:
 
         if ret == '9':
             exit()
-
-
-
-
-
-
-
-
 
