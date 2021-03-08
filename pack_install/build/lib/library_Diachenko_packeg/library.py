@@ -1,5 +1,5 @@
-from book import Book
-from reader import Reader
+from library_Diachenko_packeg.book import Book
+from library_Diachenko_packeg.reader import Reader
 
 import os.path
 

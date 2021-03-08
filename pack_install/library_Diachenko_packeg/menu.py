@@ -1,12 +1,12 @@
-from book import Book
-from reader import Reader
-from library import Library
+from library_Diachenko_packeg.book import Book
+from library_Diachenko_packeg.reader import Reader
+from library_Diachenko_packeg.library import Library
 
 
 def main():
 
     library = Library()
-    library.init_from_files('hw.2/books_availible.txt', 'hw.2/reader_list.txt')
+    library.init_from_files('books_availible.txt', 'reader_list.txt')
     #reader_1 = Reader(1, 'Ivan', 'Ivanov', 30)
     while True:
         print("\n"
