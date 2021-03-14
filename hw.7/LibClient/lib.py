@@ -82,19 +82,20 @@ class Library:
             msg = f'\nОшибка, книга с ID "{id_book}" не найдена'
             return msg
 
-        for book in self.books:
-            if book.id == id_book:
-                self.books.remove(book)
-                print(f'Книга "{book.title}" была удалена')
-                msg = f'\nКнига "{book.title}" была удалена'
-                # ок, а если эта книга у кого-то из читателей???
-                # хотя ты и не добавлял книги читателям
-                for reader in self.readers:
-                    if id_book in reader.books:
-                        reader.books.remove(book)
-                        break
-                return msg
-                break
+        with self.library_lock:
+            for book in self.books:
+                if book.id == id_book:
+                    self.books.remove(book)
+                    print(f'Книга "{book.title}" была удалена')
+                    msg = f'\nКнига "{book.title}" была удалена'
+                    # ок, а если эта книга у кого-то из читателей???
+                    # хотя ты и не добавлял книги читателям
+                    for reader in self.readers:
+                        if id_book in reader.books:
+                            reader.books.remove(book)
+                            break
+                    return msg
+                    break
 
     def add_reader(self, obj_reader: Reader) -> None:
         """
