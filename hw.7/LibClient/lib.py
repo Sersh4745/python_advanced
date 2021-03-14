@@ -1,21 +1,15 @@
 from book import Book
 from reader import Reader
-from concurrent.futures import ThreadPoolExecutor
-from threading import Lock, Thread
+from threading import Lock
 import os.path
 
 
-class Library():
+class Library:
     def __init__(self, book_list=None, reader_list=None):
-        Thread.__init__(self)
         # тернарный оператор =)
         self.books = book_list if book_list is not None else []
         self.readers = reader_list if reader_list is not None else []
-        self.give_book_lock = Lock()
-        self.add_book_lock = Lock()
-        self.add_reader_lock = Lock()
-        self.return_book_lock = Lock()
-        self.read_book_lock = Lock()
+        self.library_lock = Lock()
 
     def init_from_files(self, books_file: str = None, readers_file: str = None) -> None:
         """
@@ -64,10 +58,9 @@ class Library():
         if obj_book.id in all_books_id:
             print(f'Ошибка , книга с таким ID "{obj_book.id}" уже есть в библиотеке! ')
             msg = f'\nОшибка , книга с таким ID "{obj_book.id}" уже есть в библиотеке! '
-            self.add_book_lock.release()
             return msg
 
-        with self.add_book_lock:
+        with self.library_lock:
             """ блокируем ввод новой книги ,
                 что бы избежать ввода одинакового ID
             """
@@ -101,7 +94,7 @@ class Library():
                         reader.books.remove(book)
                         break
                 return msg
-            break
+                break
 
     def add_reader(self, obj_reader: Reader) -> None:
         """
@@ -113,10 +106,9 @@ class Library():
         if obj_reader.id in all_readers_id:
             print(f'Ошибка, читатель с ID "{obj_reader.id}" уже существует!')
             msg = f'\nОшибка, читатель с ID "{obj_reader.id}" уже существует!'
-            self.add_reader_lock.release()
             return msg
 
-        with self.add_book_lock:
+        with self.library_lock:
             """ блокируем ввод нового читателя ,
                 что бы избежать ввода одинакового ID
             """
@@ -131,10 +123,7 @@ class Library():
 
         :return: None
         """
-        #print('Список книг:')
-        #for book in self.books:
         return self.books
-            #print(book)
 
     def print_list_books_available(self) -> None:
         """
@@ -142,12 +131,8 @@ class Library():
 
         :return: None
         """
-        #print('Спсиок книг в наличии:')
         books_av = [book for book in self.books if book.id_reader is None]
         return books_av
-        #for book in self.books:
-            #if book.id_reader is None:
-                #return book
 
     def print_list_books_not_available(self) -> None:
         """
@@ -155,12 +140,8 @@ class Library():
 
         :return: None
         """
-        #print('Спсиок книг не в наличии:')
         books_not_av = [book for book in self.books if book.id_reader is not None]
         return books_not_av
-        #for book in self.books:
-            #if book.id_reader is not None:
-                #return book
 
     def give_book(self, id_book: int, id_reader: int) -> None:
         """
@@ -174,28 +155,25 @@ class Library():
         if id_book not in all_books_id:
             print(f'Ошибка, книги с ID {id_book} нет!')
             msg = f'\nОшибка, книги с ID {id_book} нет!'
-            self.give_book_lock.release()
             return msg
 
         all_readers_id = [reader.id for reader in self.readers]
         if id_reader not in all_readers_id:
             print(f'Ошибка, пользователя с ID {id_reader} нет!')
             msg = f'\nОшибка, пользователя с ID {id_reader} нет!'
-            self.give_book_lock.release()
             return msg
 
         obj_book = [book for book in self.books if id_book == book.id][0]
         if obj_book.id_reader is not None:
             print(f'Ошибка, книги с ID reader {id_reader} нет в наличии!')
             msg = f'\nОшибка, книги с ID reader {id_reader} нет в наличии!'
-            self.give_book_lock.release()
             return msg
 
         # получаем юзера
         obj_reader = [reader for reader in self.readers if id_reader == reader.id][0]
 
         # выдаем книгу
-        with self.give_book_lock:
+        with self.library_lock:
             """ блокируем функию ,
                 что бы избежать ввода одинакового ID
             """
@@ -217,37 +195,32 @@ class Library():
         if id_book not in all_books_id:
             print(f'Ошибка, книги с ID {id_book} нет!')
             msg = f'\nОшибка, книги с ID {id_book} нет!'
-            self.return_book_lock.release()
             return msg
 
         all_readers_id = [reader.id for reader in self.readers]
         if id_reader not in all_readers_id:
             print(f'Ошибка, пользователя с ID {id_reader} нет!')
             msg = f'\nОшибка, пользователя с ID {id_reader} нет!'
-            self.return_book_lock.release()
             return msg
 
         obj_book = [book for book in self.books if id_book == book.id][0]
         if obj_book.id_reader is None:
             print(f'Ошибка, книга с ID reader {id_reader} и так в библиотеке!')
             msg = f'\nОшибка, книга с ID reader {id_reader} и так в библиотеке!'
-            self.return_book_lock.release()
             return msg
 
         obj_reader = [reader for reader in self.readers if id_reader == reader.id][0]
         if obj_book.id_reader != obj_reader.id or obj_book.id not in obj_reader.books:
             print(f'Ошибка, книга с ID {id_book} находится не у {obj_reader.name}!')
             msg = f'\nОшибка, книга с ID {id_book} находится не у {obj_reader.name}!'
-            self.return_book_lock.release()
             return msg
 
         # возвращаем книгу
-        with self.return_book_lock:
+        with self.library_lock:
             obj_book.id_reader = None
             obj_reader.books.remove(obj_book.id)
             print('Поздравляем Вы вернули книгу')
             msg = '\nПоздравляем Вы вернули книгу'
-            self.return_book_lock.release()
             return msg
 
 

@@ -1,115 +1,92 @@
-from Lib import Library
 from book import Book
-from reader import Reader
 from msgutils import send_msg, recv_msg
 import pickle
 import socket
-from threading import Thread
-from client import Client
-
-
-class Server:
-    def __init__(self, ip: str, port: int, lib: Library):
-        self.ip = ip
-        self.port = port
-        self.lib = lib
-
-    def st_server(self):
-        with socket.socket() as sock:
-            sock.bind((self.ip, self.port))
-            sock.listen(1)
-            while True:
-                conn, _ = sock.accept()
-                client_thread = Thread(target=Client.client_hand, args=(conn, self.lib))
-                client_thread.start()
-
-
-if __name__ == '__main__':
-    lib = Library()
-    lib.init_from_files('books_availible.txt', 'reader_list.txt')
-    Server('', 12345, lib)
-
-"""
-def st_server(ip: str, port: int, lib: Library):
-    with socket.socket() as sock:
-        sock.bind((ip, port))
-        sock.listen(1)
-        while True:
-            conn, _ = sock.accept()
-            client_hand(conn, lib)
-
-
-def client_hand(conn: socket, lib: Library):
+import time
+with socket.socket() as sock:
+    sock.connect(('localhost', 12345))
     while True:
-        menu = ("\n"
-                " ====== Меню =======" + "\n"
-                "1. Показать все книги" + "\n"
-                "2. Показать книги в наличии" + "\n"
-                "3. Показать книги не в наличии" + "\n"
-                "4. Взять книгу" + "\n"
-                "5. Вернуть книгу" + "\n"
-                "6. Добавить книгу" + "\n"
-                "7. Удалить книгу" + "\n"
-                "8. Добавить читетеля" + "\n"
-                "0. Выход" + "\n")
-        send_msg(conn, pickle.dumps(menu))
-        ret = recv_msg(conn).decode()
+        menu = recv_msg(sock)
 
-        if not ret:
-            print('Ошибка , нет номера команды!')
+        if not menu:
+            print('Ошибка, нет меню!')
             exit()
-        if ret == '1':
-            send_msg(conn, pickle.dumps(lib.print_all_books()))
+        menu = pickle.loads(menu)
+        print(menu)
 
-        if ret == '2':
-            send_msg(conn, pickle.dumps(lib.print_list_books_available()))
+        choice = (input("Введите номер команды: "))
+        if not choice.isnumeric():
+            print('Ошибка, вы ввели не число!')
+            exit()
+        send_msg(sock, choice.encode())
 
-        if ret == '3':
-            send_msg(conn, pickle.dumps(lib.print_list_books_not_available()))
+        if choice in ('1', '2', '3'):
+            b_books = recv_msg(sock)
+            if not b_books:
+                print('Ошибка, нет книг!')
+                exit()
+            print('Список книг:')
+            books = pickle.loads(b_books)
+            for book in books:
+                print(book)
 
-        if ret == '4':
-            request_book_id = recv_msg(conn).decode()
-            request_name_id = recv_msg(conn).decode()
-            msg = lib.give_book(int(request_book_id), int(request_name_id))
-            send_msg(conn, pickle.dumps(msg))
+        if choice in ('4', '5'):
+            request_book_id = input('Введите ID книги: ')
+            if not request_book_id.isnumeric():
+                print('Ошибка, вы ввели не число!')
+                exit()
+            request_name_id = input('Введите ID читателя: ')
+            if not request_name_id.isnumeric():
+                print('Ошибка, вы ввели не число!')
+                exit()
+            send_msg(sock, request_book_id.encode())
+            send_msg(sock, request_name_id.encode())
+            #answer = pickle.loads(recv_msg(sock))
+            print(pickle.loads(recv_msg(sock)))
 
-        if ret == '5':
-            request_book_id = recv_msg(conn).decode()
-            request_name_id = recv_msg(conn).decode()
-            msg = lib.return_book(int(request_book_id), int(request_name_id))
-            send_msg(conn, pickle.dumps(msg))
+        if choice == '6':
+            id_b = input('Введите ID Книги: ')
+            if not id_b.isnumeric():
+                print('Ошибка, вы ввели не число!')
+                exit()
+            name = input('Введите название Книги: ')
+            author = input('Введите Автора Книги: ')
+            year = input('Введите год Книги: ')
 
-        if ret == '6':
-            id_b = recv_msg(conn).decode()
-            name = recv_msg(conn).decode()
-            author = recv_msg(conn).decode()
-            year = recv_msg(conn).decode()
-            msg = lib.add_book(Book(int(id_b), name, author, int(year)))
-            send_msg(conn, pickle.dumps(msg))
+            if not year.isnumeric():
+                print('Ошибка, вы ввели не число!')
+                exit()
+            send_msg(sock, id_b.encode())
+            send_msg(sock, name.encode())
+            send_msg(sock, author.encode())
+            send_msg(sock, year.encode())
+            print(pickle.loads(recv_msg(sock)))
 
-        if ret == '7':
-            request3_book_id = recv_msg(conn).decode()
-            msg = lib.remove_book(int(request3_book_id))
-            send_msg(conn, pickle.dumps(msg))
+        if choice == '7':
+            request3_book_id = input('Введите ID книги которую хотите удалить: ')
+            if not request3_book_id.isnumeric():
+                print('Ошибка, вы ввели не число!')
+            send_msg(sock, request3_book_id.encode())
+            print(pickle.loads(recv_msg(sock)))
 
-        if ret == '8':
-            id_r = recv_msg(conn).decode()
-            name = recv_msg(conn).decode()
-            surname = recv_msg(conn).decode()
-            age = recv_msg(conn).decode()
-            msg = lib.add_reader(Reader(int(id_r), name, surname, int(age)))
-            send_msg(conn, pickle.dumps(msg))
+        if choice == '8':
+            id_r = input('Введите ID читателя: ')
+            if not id_r.isnumeric():
+                print('Ошибка, вы ввели не число!')
+                exit()
+            name = input('Введите имя читателя: ')
+            surname = input('Введите фамилию: ')
+            age = input('Введите возвраст: ')
 
-        if ret == '0':
-            break
+            if not age.isnumeric():
+                print('Ошибка, вы ввели не число!')
+                exit()
+            send_msg(sock, id_r.encode())
+            send_msg(sock, name.encode())
+            send_msg(sock, surname.encode())
+            send_msg(sock, age.encode())
+            print(pickle.loads(recv_msg(sock)))
 
-
-if __name__ == '__main__':
-    lib = Library()
-    lib.init_from_files('books_availible.txt', 'reader_list.txt')
-    Server.st_server('', 12345, lib)
-
-"""
-
-
+        if choice == '0':
+            exit()
 

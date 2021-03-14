@@ -4,11 +4,12 @@ from reader import Reader
 import pickle
 import socket
 from threading import Thread
+from lib import Library
 
 
-class Client:
-
-    def __init__(self, conn: socket, lib: Library,): # сюда Thread  передать?
+class Client(Thread):
+    def __init__(self, conn: socket, lib: Library):
+        super(Client, self).__init__()
         self.conn = conn
         self.lib = lib
 
