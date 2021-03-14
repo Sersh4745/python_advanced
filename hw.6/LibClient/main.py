@@ -2,10 +2,9 @@ from book import Book
 from msgutils import send_msg, recv_msg
 import pickle
 import socket
-
-sock = socket.socket()
-sock.connect(('localhost', 12342))
-
+with socket.socket() as sock:
+    sock = socket.socket()
+    sock.connect(('localhost', 12345))
 while True:
     menu = recv_msg(sock)
 
@@ -19,7 +18,7 @@ while True:
     if not choice.isnumeric():
         print('Ошибка, вы ввели не число!')
         exit()
-    send_msg(sock, choice.encode(encoding='866'))
+    send_msg(sock, choice.encode())
 
     if choice in ('1', '2', '3'):
         b_books = recv_msg(sock)
@@ -40,8 +39,8 @@ while True:
         if not request_name_id.isnumeric():
             print('Ошибка, вы ввели не число!')
             exit()
-        send_msg(sock, request_book_id.encode(encoding='866'))
-        send_msg(sock, request_name_id.encode(encoding='866'))
+        send_msg(sock, request_book_id.encode())
+        send_msg(sock, request_name_id.encode())
         #answer = pickle.loads(recv_msg(sock))
         print(pickle.loads(recv_msg(sock)))
 
@@ -57,17 +56,17 @@ while True:
         if not year.isnumeric():
             print('Ошибка, вы ввели не число!')
             exit()
-        send_msg(sock, id_b.encode(encoding='866'))
-        send_msg(sock, name.encode(encoding='866'))
-        send_msg(sock, author.encode(encoding='866'))
-        send_msg(sock, year.encode(encoding='866'))
+        send_msg(sock, id_b.encode())
+        send_msg(sock, name.encode())
+        send_msg(sock, author.encode())
+        send_msg(sock, year.encode())
         print(pickle.loads(recv_msg(sock)))
 
     if choice == '7':
         request3_book_id = input('Введите ID книги которую хотите удалить: ')
         if not request3_book_id.isnumeric():
             print('Ошибка, вы ввели не число!')
-        send_msg(sock, request3_book_id.encode(encoding='866'))
+        send_msg(sock, request3_book_id.encode())
         print(pickle.loads(recv_msg(sock)))
 
     if choice == '8':
@@ -82,10 +81,10 @@ while True:
         if not age.isnumeric():
             print('Ошибка, вы ввели не число!')
             exit()
-        send_msg(sock, id_r.encode(encoding='866'))
-        send_msg(sock, name.encode(encoding='866'))
-        send_msg(sock, surname.encode(encoding='866'))
-        send_msg(sock, age.encode(encoding='866'))
+        send_msg(sock, id_r.encode())
+        send_msg(sock, name.encode())
+        send_msg(sock, surname.encode())
+        send_msg(sock, age.encode())
         print(pickle.loads(recv_msg(sock)))
 
     if choice == '0':
