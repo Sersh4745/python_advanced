@@ -10,4 +10,4 @@ class Book:
         self.id_reader = None
 
     def __repr__(self):
-        return f'{self.id}) {self.title}, {self.year}'
+        return f'{self.id}, {self.title}, {self.year}'
