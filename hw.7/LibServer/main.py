@@ -16,7 +16,7 @@ class Server:
             while True:
                 conn, _ = sock.accept()
                 client_thread = Client(conn, self.lib)
-                client_thread.client_hand()
+                client_thread.start()
 
 
 if __name__ == '__main__':

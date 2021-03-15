@@ -9,11 +9,12 @@ from lib import Library
 
 class Client(Thread):
     def __init__(self, conn: socket, lib: Library):
-        super(Client, self).__init__()
+        super().__init__()
+
         self.conn = conn
         self.lib = lib
 
-    def client_hand(self):
+    def run(self) -> None:
         while True:
             menu = ("\n"
                     " ====== Меню =======" + "\n"
@@ -44,12 +45,16 @@ class Client(Thread):
             if ret == '4':
                 request_book_id = recv_msg(self.conn).decode()
                 request_name_id = recv_msg(self.conn).decode()
+
+                # todo ОБРАТИ ВНИМАНИЕ: give_book ничего не возвращает (там нет msg)
                 msg = self.lib.give_book(int(request_book_id), int(request_name_id))
                 send_msg(self.conn, pickle.dumps(msg))
 
             if ret == '5':
                 request_book_id = recv_msg(self.conn).decode()
                 request_name_id = recv_msg(self.conn).decode()
+
+                # todo ОБРАТИ ВНИМАНИЕ: return_book ничего не возвращает (там нет msg)
                 msg = self.lib.return_book(int(request_book_id), int(request_name_id))
                 send_msg(self.conn, pickle.dumps(msg))
 
@@ -58,11 +63,15 @@ class Client(Thread):
                 name = recv_msg(self.conn).decode()
                 author = recv_msg(self.conn).decode()
                 year = recv_msg(self.conn).decode()
+
+                # todo ОБРАТИ ВНИМАНИЕ: add_book ничего не возвращает (там нет msg)
                 msg = self.lib.add_book(Book(int(id_b), name, author, int(year)))
                 send_msg(self.conn, pickle.dumps(msg))
 
             if ret == '7':
                 request3_book_id = recv_msg(self.conn).decode()
+
+                # todo ОБРАТИ ВНИМАНИЕ: remove_book ничего не возвращает (там нет msg)
                 msg = self.lib.remove_book(int(request3_book_id))
                 send_msg(self.conn, pickle.dumps(msg))
 
@@ -71,12 +80,10 @@ class Client(Thread):
                 name = recv_msg(self.conn).decode()
                 surname = recv_msg(self.conn).decode()
                 age = recv_msg(self.conn).decode()
+
+                # todo ОБРАТИ ВНИМАНИЕ: add_reader ничего не возвращает (там нет msg)
                 msg = self.lib.add_reader(Reader(int(id_r), name, surname, int(age)))
                 send_msg(self.conn, pickle.dumps(msg))
 
             if ret == '0':
                 break
-
-
-#if __name__ == '__main__':
-   # Client(Server)
