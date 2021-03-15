@@ -9,11 +9,11 @@ from lib import Library
 
 class Client(Thread):
     def __init__(self, conn: socket, lib: Library):
-        super(Client, self).__init__()
+        super().__init__()
         self.conn = conn
         self.lib = lib
 
-    def client_hand(self):
+    def run(self) -> None:
         while True:
             menu = ("\n"
                     " ====== Меню =======" + "\n"
@@ -76,7 +76,3 @@ class Client(Thread):
 
             if ret == '0':
                 break
-
-
-#if __name__ == '__main__':
-   # Client(Server)
