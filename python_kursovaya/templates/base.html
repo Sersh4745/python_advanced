@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="">
+		<meta name="keywords" content="">
+
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css" media="all">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!--    <title>{% block title %}{% endblock %}</title>-->
+
+    <a href="/home">
+    <img src="https://itea.ua/wp-content/themes/new-it/relize/img/logo-itea.svg" alt="ITEA">
+    </a>
+    <img class=" panda-img" src="https://itea.ua/wp-content/themes/new-it/images/about_us/panda_for_main.gif" width="100" height="100" alt="">
+</head>
+<!--    <div class="ant-col q5qmdh-0 hLUPuh ant-col-xs-4 ant-col-md-4">-->
+<!--        <a href="/home">-->
+<!--            <div class="dey4wx-0 bsPjQV">-->
+<!--            <div class="dey4wx-1 iYFacd">Главная</div>-->
+<!--            <div class="dey4wx-2 mjhzl">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        </a>-->
+<!--    </div>-->
+
+            <div class="nav">
+                {% if current_user.is_authenticated %}
+                    <label class="userInfo">Hello {{current_user.name}}</label>
+                {% else %}
+                    <label class="userInfo">Hello Guest</label>
+                {% endif %}
+
+				<ul class="menu">
+					<li><a href="/">Home</a></li>
+                        {% if not current_user.is_authenticated %}
+                            <li><a href="login">Sign In</a></li>
+                            <li><a href="registration">Sign Up</a></li>
+                        {% else %}
+                            <li><a href="logout">Logout</a></li>
+                        {% endif %}
+				</ul>
+			</div>
+
+<body>
+{% block content %}{% endblock %}
+</body>
+
+
+<div class="container py-5" id="custom-cards">
+  <h2 class="pb-2 border-bottom">Лучшие книги Python</h2>
+
+  <div class="row row-cols-3 align-items-stretch py-5">
+    <div class="col">
+        <img src="https://www.bookovka.ua/602869-thickbox_default/izuchaem-python-programmirovanie-igr-vizualizaciya-dannykh-veb-prilozheniya.jpg" alt="Bootstrap" width="300" height="400" >
+        <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+        </div>
+    </div>
+
+    <div class="row row-cols-3 align-items-stretch py-1">
+    <div class="col">
+        <img src="https://www.bookovka.ua/384297-large_default/matematika-na-python-chast-i-elementy-linejnoj-algebry-i-analiticheskoj-geometrii.jpg" alt="Bootstrap" width="300" height="400" >
+        <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+        </div>
+    </div>
+       </div>
+      <div class="row row-cols-3 align-items-stretch py-1">
+    <div class="col">
+        <img src="https://www.bookovka.ua/372094-large_default/uchim-python-delaya-krutye-igry.jpg" alt="Bootstrap" width="300" height="400" >
+        <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+        </div>
+    </div>
+
+        <script>
+		document.cookie = "foo=bar;";
+		if (!document.cookie)
+		{
+		alert("This website requires cookies to function properly");
+		}
+	</script>
+<!--</body>-->
+<!--    {% block body %}{% endblock %}-->
+
+<!--</body>-->
+</html>

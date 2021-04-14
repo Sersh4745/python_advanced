@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="rightCol">
+    {% if message %}
+    <h2>{{message}}</h2>
+    <br><br>
+    {% endif %}
+
+    {% if books %}
+        <center><h1>Выбирете книги для удаления</h1></center>
+        <form method="post">
+            <table>
+                <thead>
+                <tr>
+                    <th><center>Выбрат</center></th>
+                    <th><center>ID</center></th>
+                    <th>Название</th>
+                    <th>Автор</th>
+                    <th><center>Год</center></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for book in books %}
+                    <tr>
+                        <td><center><input type="checkbox" name="{{book.id}}"></center></td>
+                        <td><center>{{book.id}}</center></td>
+                        <td>{{book.title}}</td>
+                        <td>{{book.author}}</td>
+                        <td><center>{{book.year}}</center></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <center>
+                <button type="submit" class="minWidth">Удалить книги</button>
+                <button type="reset" class="minWidth">Сброс</button>
+            </center>
+        </form>
+    {% else %}
+    <h1>No books yet</h1>
+    {% endif %}
+</div>
+{% endblock %}

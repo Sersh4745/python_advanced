@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if message %}
+    <center><h2>{{message}}</h2></center>
+    <br><br>
+{% endif %}
+
+    <div class="signInCol" id="signIn">
+        <form method="POST">
+            <input type="hidden" name="next" value="{{ request.args.get('next', '') }}"/>
+
+            <center><h1>Registration</h1><br></center>
+            <center><input type="text" name="email" placeholder="Email" required></center>
+            <center><input type="password" id="password" name="psw" placeholder="Password" required></center>
+            <center><input type="password" id="confirm_password" placeholder="Confirm Password" required></center>
+
+            <br><br>
+
+            <center><input type="text" name="name" placeholder="Name" required></center>
+            <center><input type="text" name="surname" placeholder="Surname" required></center>
+           <center> <input type="text" name="year" placeholder="Year of birth" required></center>
+
+            <br><br>
+
+            <center><button type="submit" class="minWidth">Registration</button></center>
+        </form>
+        <script>
+            var password = document.getElementById("password")
+                , confirm_password = document.getElementById("confirm_password");
+
+            function validatePassword(){
+                if(password.value != confirm_password.value) {
+                    confirm_password.setCustomValidity("Passwords Don't Match");
+                } else {
+                    confirm_password.setCustomValidity('');
+                }
+            }
+
+            password.onchange = validatePassword;
+            confirm_password.onkeyup = validatePassword;
+
+        </script>
+    </div>
+
+{% endblock %}

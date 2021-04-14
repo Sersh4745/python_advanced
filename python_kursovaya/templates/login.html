@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if message %}
+    <center><h2>{{message}}</h2></center>
+    <br><br>
+{% endif %}
+
+{% for category, message in get_flashed_messages(with_categories=true) %}
+    <center><h2>{{message}}</h2></center>
+    <br><br>
+{% endfor %}
+
+    <div class="signInCol" id="signIn">
+        <form method="POST">
+
+                <center><h1>Sign In:</h1><br></center>
+
+
+                <center><input type="text" name="email" placeholder="Email" required></center>
+                <center><input type="password" name="psw" placeholder="Password" required></center>
+
+
+                <br><br>
+
+
+                <center><button type="submit" class="minWidth">Sign in</button></center>
+        </form>
+    </div>
+{% endblock %}

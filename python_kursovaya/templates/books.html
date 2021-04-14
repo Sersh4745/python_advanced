@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="rightCol">
+    {% if books %}
+        <center><h1>Книги в библиотеке</h1></center>
+        <CENTER><table class="table_sort">
+            <thead>
+            <tr>
+                <th><center>ID</center></th>
+                <th>Title</th>
+                <th>Author</th>
+                <th><center>Years</center></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for book in books %}
+                <tr>
+                    <td><center>{{book.id}}</center></td>
+                    <td>{{book.title}}</td>
+                    <td>{{book.author}}</td>
+                    <td><center>{{book.year}}</center></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table></CENTER>
+
+    {% else %}
+   <center><h1>No books yet</h1></center>
+    {% endif %}
+
+</div>
+
+{% endblock %}
